@@ -1,6 +1,6 @@
 package com.rifqio.springsecurity.commons.exception;
 
-import com.rifqio.springsecurity.commons.dto.response.ApiErrorResponse;
+import com.rifqio.springsecurity.commons.dto.response.ErrorResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,20 +16,20 @@ public class GlobalExceptionHandler {
     private final Logger logger = Logger.getLogger(GlobalExceptionHandler.class.getName());
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ApiErrorResponse<String>> handleInternalServerError(RuntimeException ex, WebRequest request) {
+    protected ResponseEntity<ErrorResponse<String>> handleInternalServerError(RuntimeException ex, WebRequest request) {
         logger.severe(ex.getMessage());
-        return ResponseEntity.status(500).body(ApiErrorResponse.internalServerError());
+        return ResponseEntity.status(500).body(ErrorResponse.internalServerError());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ApiErrorResponse<Object>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, WebRequest request) {
+    protected ResponseEntity<ErrorResponse<Object>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, WebRequest request) {
         List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
-        return ResponseEntity.status(400).body(ApiErrorResponse.badRequest("Validation error", errors));
+        return ResponseEntity.status(400).body(ErrorResponse.badRequest("Validation error", errors));
     }
 
     @ExceptionHandler(RuntimeException.class)
-    protected ResponseEntity<ApiErrorResponse<String>> handleNotFoundException(RuntimeException ex, WebRequest request) {
+    protected ResponseEntity<ErrorResponse<String>> handleNotFoundException(RuntimeException ex, WebRequest request) {
         logger.severe(ex.getMessage());
-        return ResponseEntity.status(404).body(ApiErrorResponse.notFound());
+        return ResponseEntity.status(404).body(ErrorResponse.notFound());
     }
 }

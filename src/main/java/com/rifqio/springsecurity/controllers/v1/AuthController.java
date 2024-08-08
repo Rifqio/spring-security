@@ -1,7 +1,7 @@
 package com.rifqio.springsecurity.controllers.v1;
 
 import com.rifqio.springsecurity.commons.dto.request.auth.RegisterDTO;
-import com.rifqio.springsecurity.commons.dto.response.ApiResponse;
+import com.rifqio.springsecurity.commons.dto.response.SuccessResponse;
 import com.rifqio.springsecurity.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +18,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<String>> register(@Valid @RequestBody RegisterDTO payload) {
+    public ResponseEntity<SuccessResponse<String>> register(@Valid @RequestBody RegisterDTO payload) {
         authService.register(payload);
-        return ResponseEntity.status(201).body(ApiResponse.success("User registered successfully"));
+        return ResponseEntity.status(201).body(SuccessResponse.success("User registered successfully"));
     }
 }
