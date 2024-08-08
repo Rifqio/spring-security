@@ -1,7 +1,5 @@
 package com.rifqio.springsecurity.config;
 
-import com.rifqio.springsecurity.commons.exception.AuthExceptionHandler;
-import com.rifqio.springsecurity.commons.exception.CustomAccessDeniedHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +20,11 @@ public class AppSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(@NotNull HttpSecurity http) throws Exception {
         // For https
         // http.requiresChannel(channel -> channel.anyRequest().requiresSecure());
-        http.sessionManagement(e -> e.sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::none));
-        http.sessionManagement(e -> e.invalidSessionUrl("/invalid-session").maximumSessions(3).maxSessionsPreventsLogin(true));
+        http.sessionManagement(e -> e
+                .sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::none)
+                .maximumSessions(3)
+                .maxSessionsPreventsLogin(true)
+        );
 
         http.csrf(csrf -> csrf.disable());
         http.authorizeHttpRequests((requests) -> {
@@ -32,9 +33,12 @@ public class AppSecurityConfig {
         });
 
         http.formLogin(withDefaults());
+        http.httpBasic(withDefaults());
+//        http.exceptionHandling(e -> e
+//                .authenticationEntryPoint(new AuthExceptionHandler())
+//                .accessDeniedHandler(new CustomAccessDeniedHandler())
+//        );
 
-        http.exceptionHandling(e -> e.authenticationEntryPoint(new AuthExceptionHandler()));
-        http.exceptionHandling(e -> e.accessDeniedHandler(new CustomAccessDeniedHandler()));
         return http.build();
     }
 

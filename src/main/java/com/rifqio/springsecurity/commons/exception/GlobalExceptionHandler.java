@@ -32,8 +32,4 @@ public class GlobalExceptionHandler {
         logger.severe(ex.getMessage());
         return ResponseEntity.status(404).body(ApiErrorResponse.notFound());
     }
-
-    public static ResponseEntity<ApiErrorResponse<String>> handleUnauthorizedException(RuntimeException ex, WebRequest request) {
-        return ResponseEntity.status(401).body(ApiErrorResponse.unauthorized());
-    }
 }
