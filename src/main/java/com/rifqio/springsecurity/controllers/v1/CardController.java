@@ -21,7 +21,7 @@ public class CardController {
     private final CardService cardService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getCurrentCards(@RequestParam Long accountId) {
+    public ResponseEntity<ApiResponse<?>> getCurrentCards(@RequestParam Long accountId) {
         List<Cards> cards = cardService.getMyCurrentCardList(accountId);
         if (cards.isEmpty()) return ResponseEntity.badRequest().body(ErrorResponse.notFound("No card found"));
         return ResponseEntity.ok(SuccessResponse.success("Card list retrieved successfully", cards));

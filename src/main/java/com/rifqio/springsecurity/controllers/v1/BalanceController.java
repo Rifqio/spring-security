@@ -1,6 +1,5 @@
 package com.rifqio.springsecurity.controllers.v1;
 
-import com.rifqio.springsecurity.commons.dto.response.ApiResponse;
 import com.rifqio.springsecurity.commons.dto.response.SuccessResponse;
 import com.rifqio.springsecurity.model.AccountTransactions;
 import com.rifqio.springsecurity.service.BalanceService;
@@ -20,7 +19,7 @@ public class BalanceController {
     private final BalanceService balanceService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getBalanceReport(@RequestParam Long accountId) {
+    public ResponseEntity<SuccessResponse<List<AccountTransactions>>> getBalanceReport(@RequestParam Long accountId) {
         List<AccountTransactions> accountTransactions = balanceService.getBalanceReport(accountId);
         return ResponseEntity.ok(SuccessResponse.success("Balance report retrieved successfully", accountTransactions));
     }

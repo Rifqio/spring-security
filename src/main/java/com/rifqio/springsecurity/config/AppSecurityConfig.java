@@ -29,6 +29,7 @@ public class AppSecurityConfig {
         http.csrf(csrf -> csrf.disable());
         http.authorizeHttpRequests((requests) -> {
             requests.requestMatchers(new AntPathRequestMatcher("/api/v1/auth/**")).permitAll();
+            requests.requestMatchers(new AntPathRequestMatcher("/api/v1/notice/**")).permitAll();
             requests.anyRequest().authenticated();
         });
 

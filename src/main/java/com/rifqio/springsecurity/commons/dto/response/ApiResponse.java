@@ -3,7 +3,7 @@ package com.rifqio.springsecurity.commons.dto.response;
 import lombok.Data;
 
 @Data
-public class ApiResponse {
+public class ApiResponse<T> {
     private boolean success;
     private String message;
 

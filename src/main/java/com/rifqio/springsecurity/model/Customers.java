@@ -1,5 +1,6 @@
 package com.rifqio.springsecurity.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,14 +13,15 @@ import java.util.Date;
 public class Customers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_customer")
     private Long id;
 
     private String name;
 
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
 
     @Column(name = "phone_number")
     private String phoneNumber;

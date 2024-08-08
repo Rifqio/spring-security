@@ -17,4 +17,8 @@ public class RegisterDTO {
     @Size(min = 6, message = "password should have at least 6 characters")
     @NotBlank(message = "password cannot be null")
     private String password;
+
+    @NotBlank(message = "phone number cannot be null")
+    @Size(min = 10, message = "phone number should have at least 10 characters")
+    private String phoneNumber;
 }

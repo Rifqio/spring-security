@@ -21,7 +21,7 @@ public class LoanController {
     private final LoanService loanService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getCurrentLoans(@RequestParam Long accountId) {
+    public ResponseEntity<ApiResponse<?>> getCurrentLoans(@RequestParam Long accountId) {
         List<Loans> loans = loanService.getCurrentLoans(accountId);
         if (loans.isEmpty()) return ResponseEntity.badRequest().body(ErrorResponse.notFound("No loans available"));
         return ResponseEntity.ok(SuccessResponse.success("Loans retrieved successfully", loans));

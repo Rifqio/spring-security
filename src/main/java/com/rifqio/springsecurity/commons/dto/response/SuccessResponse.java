@@ -7,7 +7,7 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
-public class SuccessResponse<T> extends ApiResponse {
+public class SuccessResponse<T> extends ApiResponse<T> {
     private T data;
 
     public SuccessResponse(String message, T data) {

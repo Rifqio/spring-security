@@ -26,10 +26,4 @@ public class GlobalExceptionHandler {
         List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
         return ResponseEntity.status(400).body(ErrorResponse.badRequest("Validation error", errors));
     }
-
-    @ExceptionHandler(RuntimeException.class)
-    protected ResponseEntity<ErrorResponse<String>> handleNotFoundException(RuntimeException ex, WebRequest request) {
-        logger.severe(ex.getMessage());
-        return ResponseEntity.status(404).body(ErrorResponse.notFound());
-    }
 }

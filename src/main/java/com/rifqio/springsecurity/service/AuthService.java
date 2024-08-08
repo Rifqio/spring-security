@@ -1,6 +1,8 @@
 package com.rifqio.springsecurity.service;
 
 import com.rifqio.springsecurity.commons.dto.request.auth.RegisterDTO;
+import com.rifqio.springsecurity.commons.exception.UserAlreadyRegisteredException;
+import com.rifqio.springsecurity.model.Customers;
 import com.rifqio.springsecurity.repository.CustomersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,10 +14,24 @@ public class AuthService {
     private final CustomersRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void register(RegisterDTO payload) {
+    public void register(RegisterDTO payload) throws UserAlreadyRegisteredException {
+        if (checkUserExist(payload.getEmail())) {
+            throw new UserAlreadyRegisteredException(payload.getEmail());
+        }
+
         String hashedPassword = passwordEncoder.encode(payload.getPassword());
-        payload.setPassword(hashedPassword);
-//        Customer customer = new Customer(payload.getName(), payload.getEmail(), payload.getPassword(), "read");
-//        customerRepository.save(customer);
+        Customers customers = new Customers();
+
+        customers.setEmail(payload.getEmail());
+        customers.setName(payload.getName());
+        customers.setPassword(hashedPassword);
+        customers.setPhoneNumber(payload.getPhoneNumber());
+        customers.setRole("read");
+
+        customerRepository.save(customers);
+    }
+
+    private boolean checkUserExist(String email) {
+        return customerRepository.findByEmail(email).isPresent();
     }
 }

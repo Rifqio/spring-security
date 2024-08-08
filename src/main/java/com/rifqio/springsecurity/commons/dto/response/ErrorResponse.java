@@ -7,12 +7,16 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
-public class ErrorResponse<E> extends ApiResponse {
+public class ErrorResponse<E> extends ApiResponse<E> {
     private E errors;
 
     public ErrorResponse(boolean success, String message, E errors) {
         super(success, message);
         this.errors = errors;
+    }
+
+    public static <E> ErrorResponse<E> badRequest(String message) {
+        return new ErrorResponse<>(false, message, null);
     }
 
     public static <E> ErrorResponse<E> badRequest(String message, E errors) {
