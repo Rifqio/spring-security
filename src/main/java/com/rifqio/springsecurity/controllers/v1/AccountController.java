@@ -31,6 +31,6 @@ public class AccountController {
     public ResponseEntity<ApiResponse<?>> getAccountById(@PathVariable Long id) {
         Accounts account = accountService.getAccountByCustomerId(id);
         if (account == null) return ResponseEntity.badRequest().body(ErrorResponse.notFound("Account not found"));
-        return ResponseEntity.ok(SuccessResponse.success("Account retrieved successfully"));
+        return ResponseEntity.ok(SuccessResponse.success("Account retrieved successfully", account));
     }
 }

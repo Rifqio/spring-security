@@ -1,5 +1,6 @@
 package com.rifqio.springsecurity.service;
 
+import com.rifqio.springsecurity.commons.dto.request.auth.AuthRole;
 import com.rifqio.springsecurity.commons.dto.request.auth.RegisterDTO;
 import com.rifqio.springsecurity.commons.exception.UserAlreadyRegisteredException;
 import com.rifqio.springsecurity.model.Customers;
@@ -7,6 +8,8 @@ import com.rifqio.springsecurity.repository.CustomersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +29,8 @@ public class AuthService {
         customers.setName(payload.getName());
         customers.setPassword(hashedPassword);
         customers.setPhoneNumber(payload.getPhoneNumber());
-        customers.setRole("read");
+        customers.setRole(AuthRole.USER.toString());
+        customers.setCreatedAt(new Date());
 
         customerRepository.save(customers);
     }

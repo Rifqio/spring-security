@@ -1,5 +1,6 @@
 package com.rifqio.springsecurity.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -26,6 +27,6 @@ public class Accounts {
     private String branchAddress;
 
     @Column(name = "created_at")
+    @JsonIgnore
     private Date createdAt;
-
 }

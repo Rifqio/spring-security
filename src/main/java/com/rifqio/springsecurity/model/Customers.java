@@ -1,11 +1,13 @@
 package com.rifqio.springsecurity.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity(name = "customers")
 @Getter
@@ -29,5 +31,10 @@ public class Customers {
     private String role;
 
     @Column(name = "created_at")
+    @JsonIgnore
     private Date createdAt;
+
+    @OneToMany(mappedBy = "customers", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Authority> authorities;
 }

@@ -4,7 +4,6 @@ import com.rifqio.springsecurity.model.Customers;
 import com.rifqio.springsecurity.repository.CustomersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +22,12 @@ public class AppUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customers customer = customerRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(customer.getRole()));
+        List<SimpleGrantedAuthority> authorities = customer
+                .getAuthorities()
+                .stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorities()))
+                .toList();
+
         return new User(customer.getEmail(), customer.getPassword(), authorities);
     }
 }
