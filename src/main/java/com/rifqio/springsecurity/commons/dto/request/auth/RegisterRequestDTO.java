@@ -3,10 +3,10 @@ package com.rifqio.springsecurity.commons.dto.request.auth;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
-public class RegisterDTO {
+@Getter
+public class RegisterRequestDTO {
     @Email(message = "email should be valid")
     @NotBlank(message = "email cannot be null")
     private String email;

@@ -1,4 +1,4 @@
-package com.rifqio.springsecurity.config.filter;
+package com.rifqio.springsecurity.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
