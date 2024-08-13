@@ -31,14 +31,25 @@ public class AuthService {
     private final CustomersRepository customerRepository;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
-    private final AppUserDetailsService appUserDetailsService;
     private final Environment env;
 
     public void register(RegisterRequestDTO payload) throws UserAlreadyRegisteredException {
         if (checkUserExist(payload.getEmail())) {
             throw new UserAlreadyRegisteredException(payload.getEmail());
         }
+        Customers customers = createCustomer(payload);
+        customerRepository.save(customers);
+    }
 
+    public LoginResponseDTO authenticate(LoginRequestDTO payload) {
+        Authentication authentication = UsernamePasswordAuthenticationToken.unauthenticated(payload.getEmail(), payload.getPassword());
+        Authentication authenticationResponse = authenticationManager.authenticate(authentication);
+        String jwtToken = generateToken(authenticationResponse);
+        if (!authenticationResponse.isAuthenticated()) throw BusinessException.invalidCredentials();
+        return new LoginResponseDTO(jwtToken);
+    }
+
+    private Customers createCustomer(RegisterRequestDTO payload) {
         String hashedPassword = passwordEncoder.encode(payload.getPassword());
         Customers customers = new Customers();
 
@@ -49,15 +60,7 @@ public class AuthService {
         customers.setRole(AuthRole.USER.toString());
         customers.setCreatedAt(new Date());
 
-        customerRepository.save(customers);
-    }
-
-    public LoginResponseDTO authenticate(LoginRequestDTO payload) {
-        Authentication authentication = UsernamePasswordAuthenticationToken.unauthenticated(payload.getEmail(), payload.getPassword());
-        Authentication authenticationResponse = authenticationManager.authenticate(authentication);
-        if (!authenticationResponse.isAuthenticated()) throw BusinessException.invalidCredentials();
-        String jwtToken = generateToken(authenticationResponse);
-        return new LoginResponseDTO(jwtToken);
+        return customers;
     }
 
     private boolean checkUserExist(String email) {
