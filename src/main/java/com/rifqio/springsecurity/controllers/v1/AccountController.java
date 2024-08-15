@@ -10,7 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,10 +32,12 @@ public class AccountController {
         return ResponseEntity.ok(SuccessResponse.success("Account retrieved successfully", accountDetails));
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<ApiResponse<?>> getAccountById(@PathVariable Long id) {
-        Accounts account = accountService.getAccountByCustomerId(id);
-        if (account == null) return ResponseEntity.badRequest().body(ErrorResponse.notFound("Account not found"));
-        return ResponseEntity.ok(SuccessResponse.success("Account retrieved successfully", account));
+    @GetMapping("{email}")
+    public ResponseEntity<ApiResponse<?>> getAccountByEmail(@PathVariable String email) {
+        Optional<Customers> customer = accountService.getCurrentAccount(email);
+        if (customer.isEmpty()) return ResponseEntity.badRequest().body(ErrorResponse.notFound("Account not found"));
+
+        Accounts accounts = accountService.getAccountByCustomerId(customer.get().getId());
+        return ResponseEntity.ok(SuccessResponse.success("Account retrieved successfully", accounts));
     }
 }
