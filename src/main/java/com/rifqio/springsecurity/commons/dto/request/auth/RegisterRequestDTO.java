@@ -9,16 +9,16 @@ import lombok.Getter;
 public class RegisterRequestDTO {
     @Email(message = "email should be valid")
     @NotBlank(message = "email cannot be null")
-    private String email;
+    public String email;
 
     @NotBlank(message = "name cannot be null")
-    private String name;
+    public String name;
 
     @Size(min = 6, message = "password should have at least 6 characters")
     @NotBlank(message = "password cannot be null")
-    private String password;
+    public String password;
 
     @NotBlank(message = "phone number cannot be null")
     @Size(min = 10, message = "phone number should have at least 10 characters")
-    private String phoneNumber;
+    public String phoneNumber;
 }

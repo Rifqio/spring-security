@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
-
 @Getter
 public class CustomUserDetails extends User {
     private final Customers customers;

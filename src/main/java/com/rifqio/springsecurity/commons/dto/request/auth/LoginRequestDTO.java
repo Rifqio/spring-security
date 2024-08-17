@@ -8,8 +8,8 @@ import lombok.Getter;
 public class LoginRequestDTO {
     @Email(message = "email should be valid")
     @NotBlank(message = "email cannot be null")
-    private String email;
+    public String email;
 
     @NotBlank(message = "password cannot be null")
-    private String password;
+    public String password;
 }

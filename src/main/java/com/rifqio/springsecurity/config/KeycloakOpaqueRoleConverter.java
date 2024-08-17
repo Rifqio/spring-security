@@ -21,6 +21,6 @@ public class KeycloakOpaqueRoleConverter implements OpaqueTokenAuthenticationCon
                 .stream().map(roleName -> "ROLE_" + roleName)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-        return new UsernamePasswordAuthenticationToken(authenticatedPrincipal.getName(), null, roles);
+        return new UsernamePasswordAuthenticationToken(username, null, roles);
     }
 }

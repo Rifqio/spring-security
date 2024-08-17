@@ -1,7 +1,6 @@
 package com.rifqio.springsecurity.config;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
@@ -15,14 +14,14 @@ import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 public class AppSecurityConfig {
-    @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}")
+    /* @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}")
     private String introspectionUri;
 
     @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
     private String clientId;
 
     @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}")
-    private String clientSecret;
+    private String clientSecret;*/
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(@NotNull HttpSecurity http) throws Exception {
@@ -41,22 +40,22 @@ public class AppSecurityConfig {
             return config;
         }));
 
-        // http.oauth2ResourceServer(resource -> resource.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
-        http.oauth2ResourceServer(resource -> resource.opaqueToken(opaque -> opaque
+        http.oauth2ResourceServer(resource -> resource.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
+        /* http.oauth2ResourceServer(resource -> resource.opaqueToken(opaque -> opaque
                 .authenticationConverter(new KeycloakOpaqueRoleConverter())
                 .introspectionUri(introspectionUri)
-                .introspectionClientCredentials(this.clientId, this.clientSecret)));
+                .introspectionClientCredentials(this.clientId, this.clientSecret)));*/
 
         http.authorizeHttpRequests(requests -> {
             requests.requestMatchers("/api/v1/auth/register", "/api/v1/notice/**").permitAll();
 
-            /* requests.requestMatchers("/api/v1/notice/**").permitAll();
-               requests.requestMatchers("/api/v1/account/**").hasAuthority("VIEW_ACCOUNT");
-               requests.requestMatchers("/api/v1/balance/**").hasAuthority("VIEW_BALANCE");
-               requests.requestMatchers("/api/v1/loans/**").hasAuthority("VIEW_LOANS");
-               requests.requestMatchers("/api/v1/account/**").hasAnyRole("ADMIN", "USER");
-               requests.requestMatchers("/api/v1/account/**").authenticated();
-             */
+            requests.requestMatchers("/api/v1/notice/**").permitAll();
+            // requests.requestMatchers("/api/v1/account/**").hasAuthority("VIEW_ACCOUNT");
+            // requests.requestMatchers("/api/v1/balance/**").hasAuthority("VIEW_BALANCE");
+            // requests.requestMatchers("/api/v1/loans/**").hasAuthority("VIEW_LOANS");
+            requests.requestMatchers("/api/v1/account/**").hasAnyRole("ADMIN", "USER");
+            // requests.requestMatchers("/api/v1/account/**").authenticated();
+
             requests.requestMatchers("/api/v1/balance/**", "/api/v1/loan/**", "/api/v1/card/**").hasRole("USER");
             requests.anyRequest().authenticated();
         });
